@@ -1,6 +1,6 @@
 // src/components/QuestionsTable.tsx
 import { useEffect, useState } from 'react'
-import type { Question } from '../types/allquestions'
+import type { Question } from '../types/questions/allquestions'
 import { paginate } from '../utils/pagination'
 import { v4 as uuidv4 } from 'uuid'
 const PAGE_SIZE = 10
