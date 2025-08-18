@@ -1,0 +1,36 @@
+.questions-container {
+  font-size: 15px;
+}
+
+.table-bordered {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead td {
+  border: 2px solid rgb(216, 216, 216);
+}
+
+thead {
+  font-size: 17px;
+}
+
+.mission-card {
+  height: 180px;
+  width: 100%;
+  line-height: 1.5;
+}
+
+.mission-card:nth-child(odd) {
+  background-color: rgb(216, 216, 216);
+}
+
+.mission-card td {
+  border: 2px solid lightgray;
+}
+
+.mission-name {
+  padding-left: 20px;
+  width: 11%;
+}
+
