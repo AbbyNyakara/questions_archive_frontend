@@ -50,8 +50,8 @@ export default function Filter() {
   if (error) return <div>Error: {error}</div> // Style this component
 
   return (
-    <div className='filters-container'>
-      <form className='filters-form'>
+    <form className='filters-form'>
+      <div className='filters-container'>
         {/* Countries Dropdown */}
         <select
           name='country'
@@ -89,7 +89,7 @@ export default function Filter() {
           onChange={(e) => setSelectedRound(e.target.value)}
           className='filters-dropdown'
         >
-          <option value=''>All Round</option>
+          <option value=''>All Rounds</option>
           {rounds.map((r) => (
             <option key={r.roundID} value={r.roundLabel}>
               {`${r.roundLabel}: ${r.yearsOfSurvey}`}
@@ -104,12 +104,11 @@ export default function Filter() {
           value={search}
           onChange={(e) => setSearch(e.target.value)} //The search trigger to be button-enabled- for all selections
           className='filters-search-box'
-          placeholder='Search...'
+          placeholder='Text Search...'
           autoComplete='on' // Toggle  on and off and see how it improves efficiency
         />
-
-        <button className='search-button'>Search Questions</button>
-      </form>
-    </div>
+      </div>
+      <button className='search-btn'>Search Questions</button>
+    </form>
   )
 }
