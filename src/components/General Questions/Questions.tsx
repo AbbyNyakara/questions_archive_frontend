@@ -34,7 +34,7 @@ const Questions = () => {
 
   return (
     <div className='questions-container'>
-      <h2>Afrobarometer General Survey Questions</h2>
+      <h2 className='questions-title'>Main Survey Questions</h2>
       <div className='container'>
         <table className='table-bordered'>
           {/* Table head */}
@@ -50,16 +50,16 @@ const Questions = () => {
           <tbody>
             {questions.map((question) => (
               <tr className='question-card' key={uuidv4()}>
-                <td>
+                <td className='col-category'>
                   <p className='question-category'>{question.categoryTitle}</p>
                 </td>
-                <td>
+                <td className='col-title'>
                   <p className='question-title'>{question.questionTitle}</p>
                 </td>
-                <td>
+                <td className='col-text'>
                   <p className='question-text'>{question.questionText}</p>
                 </td>
-                <td>
+                <td className='col-choices'>
                   <p className='question-choices'>{question.choices}</p>
                 </td>
               </tr>
