@@ -35,7 +35,7 @@ const Questions = () => {
   return (
     <div className='questions-container'>
       <h2 className='questions-title'>Main Survey Questions</h2>
-      <div className='container'>
+      <div className='q-container'>
         <table className='table-bordered'>
           {/* Table head */}
           <thead>

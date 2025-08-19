@@ -14,8 +14,8 @@ export type Round = {
   yearsOfSurvey: string
 }
 
-export type CountryResponse = Country[]
+// export type CountryResponse = Country[]
 
-export type CategoryResponse = Country[]
+// export type CategoryResponse = Country[]
 
-export type RoundsApiResponse = Country[]
+// export type RoundsApiResponse = Country[]
