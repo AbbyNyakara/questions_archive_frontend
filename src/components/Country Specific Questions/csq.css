@@ -1,0 +1,14 @@
+.csq-question-tag, 
+.csq-question,
+.csq-country, 
+.csq-round, 
+.csq-language {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 5px;
+}
+
+.csq-thead tr td {
+    font-weight: 500;
+    padding: 3px;
+}

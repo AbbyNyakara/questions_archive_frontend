@@ -39,7 +39,7 @@ const CountrySpecificQuestions = () => {
       <div className='q-container'>
         <table className='table-bordered'>
           {/* Table head */}
-          <thead>
+          <thead className='csq-thead'>
             <tr>
               <td>Question Tag</td>
               <td>Question Text</td>
@@ -54,19 +54,19 @@ const CountrySpecificQuestions = () => {
             {csqQuestions.map((question) => (
               <tr className='question-card' key={uuidv4()}>
                 <td className='col-qstnTag'>
-                  <p>{question.csqQuestionTag}</p>
+                  <p className='csq-question-tag'>{question.csqQuestionTag}</p>
                 </td>
                 <td className='col-qstnText'>
-                  <p>{question.csqQuestionText}</p>
+                  <p className='csq-question'>{question.csqQuestionText}</p>
                 </td>
                 <td className='col-qstnCountry'>
-                  <p>{question.csqCountryName}</p>
+                  <p className='csq-country'>{question.csqCountryName}</p>
                 </td>
                 <td className='col-qstnRound'>
-                  <p>{question.csqRoundId}</p>
+                  <p className='csq-round'>{question.csqRoundId}</p>
                 </td>
                 <td className='col-language'>
-                  <p>{question.csqLanguageTag}</p>
+                  <p className='csq-language'>{question.csqLanguageTag}</p>
                 </td>
               </tr>
             ))}
