@@ -1,11 +1,8 @@
-// import { Link, NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import logo from '/Assets/logo.png'
 import './navbar.css'
 
 const Navbar = () => {
-  // const navLinkStyle = ({ isActive }: { isActive: boolean }) => ({
-  //   textDecoration: isActive ? 'underline' : 'none',
-  // })
   return (
     <nav className='navbar'>
       <div className='container'>
@@ -13,11 +10,21 @@ const Navbar = () => {
           <img src={logo} alt='Afrobarometerlogo' />
         </div>
         <p>Questions Archive</p>
-        <ul className='nav-links'>
-          {/* <Link to='/'>General Questions</Link> */}
+        {/* <ul className='nav-links'>
           <li>General Questions</li>
           <li>Country-Specific Questions</li>
           <li>Profile</li>
+        </ul> */}
+        <ul className='nav-links'>
+          <li>
+            <Link to='/'>Main Questions</Link>
+          </li>
+          <li>
+            <Link to='/csq-questions'>Country-Specific Questions</Link>
+          </li>
+          <li>
+            <Link to='#'>Profile</Link>
+          </li>
         </ul>
       </div>
     </nav>
