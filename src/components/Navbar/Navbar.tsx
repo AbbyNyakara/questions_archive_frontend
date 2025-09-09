@@ -9,21 +9,13 @@ const Navbar = () => {
         <div className='logo'>
           <img src={logo} alt='Afrobarometerlogo' />
         </div>
-        <p>Questions Archive</p>
-        {/* <ul className='nav-links'>
-          <li>General Questions</li>
-          <li>Country-Specific Questions</li>
-          <li>Profile</li>
-        </ul> */}
+        {/* <p>Questions Archive</p> */}
         <ul className='nav-links'>
           <li>
-            <Link to='/'>Main Questions</Link>
+            <Link to='/'>Master Questionnaire</Link>
           </li>
           <li>
             <Link to='/csq-questions'>Country-Specific Questions</Link>
-          </li>
-          <li>
-            <Link to='#'>Profile</Link>
           </li>
         </ul>
       </div>

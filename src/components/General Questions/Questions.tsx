@@ -34,12 +34,13 @@ const Questions = () => {
 
   return (
     <div className='questions-container'>
-      <h2 className='questions-title'>Main Survey Questions</h2>
+      <h2 className='questions-title'>Master Questionnaire</h2>
       <div className='q-container'>
         <table className='table-bordered'>
           {/* Table head */}
           <thead>
             <tr>
+              {/* <td>Question ID</td> */}
               <td>Category</td>
               <td>Question Title</td>
               <td>Question Text</td>
