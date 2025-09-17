@@ -1,0 +1,52 @@
+.about {
+  font-family: Montserrat, Helvetica, sans-serif;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.about .about-description {
+    font-family: Montserrat, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 1.1rem;
+  line-height: 2rem;
+}
+
+.about-intro {
+  font-family: Oswald, Helvetica, sans-serif;
+  color: #d93e00;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-description {
+  max-width: 800px;
+  margin: 0 auto 1.5rem;
+  font-size: 1.1rem;
+}
+
+.about-features {
+  justify-content: center;
+  padding-top: 2rem;
+  gap: 1.2rem;
+}
+
+.feature-card {
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 250px;
+  justify-content: center;
+  font-family: Montserrat, Helvetica, sans-serif;
+}
+
+.feature-card-icon {
+  color: #d93e00;
+  text-align: center;
+}
+
+.card-heading {
+  font-weight: 600;
+  font-family: Oswald, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  padding-bottom: 1.2rem;
+  font-weight: bold;
+}

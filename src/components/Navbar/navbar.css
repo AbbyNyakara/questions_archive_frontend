@@ -1,11 +1,15 @@
 .nav-header {
   border-bottom: solid 1px #ddd;
-  background: linear-gradient(135deg, #d93e00 0%, #ff6b35 100%);
+  background-color: #d93e00;
+  /* background: linear-gradient(135deg, #d93e00 0%, #ff6b35 100%); */
   color: #fff;
   font-family: Oswald, Helvetica, sans-serif;
   text-transform: uppercase;  
   letter-spacing: 1.5px;
   padding: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .site-title {
@@ -57,7 +61,7 @@
 
   .nav-menu {
     flex-direction: column;
-    align-items: left;
+    align-items: center;
     gap: 1rem;
   }
 
