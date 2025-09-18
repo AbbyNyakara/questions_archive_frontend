@@ -10,7 +10,7 @@ const Navbar = () => {
           <ul className='nav-menu'>
             <li className='nav-item'>
               <NavLink
-                to='/about'
+                to='/'
                 className={({ isActive }) =>
                   'nav-link' + (isActive ? ' active' : '')
                 }

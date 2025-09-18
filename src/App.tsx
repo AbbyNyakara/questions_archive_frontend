@@ -1,15 +1,18 @@
 import Navbar from './components/Navbar/Navbar'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import About from './components/About/About'
-// import { Routes, Route } from 'react-router-dom'
-// import Controls from './components/Controls/Controls'
+import { Routes, BrowserRouter, Route } from 'react-router-dom'
+import Questions from './components/MainQuestionnaire/Questions'
 
 const App = () => {
   return (
-    <div>
+    <BrowserRouter>
       <Navbar />
-      <About />
-    </div>
+      <Routes>
+        <Route path='/' element={<About />} />
+        <Route path='/main-questionnaire' element={<Questions />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
