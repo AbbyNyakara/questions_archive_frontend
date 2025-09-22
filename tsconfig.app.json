@@ -23,5 +23,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "extras/sample.tsx",
+    "extras/example.tsx",
+    "extras/abby.tsx"
+  ]
 }

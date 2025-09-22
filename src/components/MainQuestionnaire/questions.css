@@ -1,0 +1,13 @@
+.questions .MuiTable-root {
+  font-family: 'Helvetica, Arial, sans-serif';
+  font-size: 14px;
+}
+
+.questions .MuiTableCell-root {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.questions .MuiTableHead-root .MuiTableCell-root {
+  font-weight: 600;  /* Bold headers */
+}
