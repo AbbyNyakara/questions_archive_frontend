@@ -339,6 +339,7 @@ export default function Questions() {
         <TableContainer
           sx={{
             fontFamily: "'Montserrat', Helvetica, sans-serif",
+            maxHeight: 400
           }}
         >
           <Table
@@ -351,6 +352,7 @@ export default function Questions() {
             }}
             aria-labelledby='tableTitle'
             size={dense ? 'small' : 'medium'}
+            stickyHeader
           >
             <EnhancedTableHead
               numSelected={selected.length}
