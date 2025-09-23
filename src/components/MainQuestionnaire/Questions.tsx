@@ -29,20 +29,119 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  CircularProgress,
+  Alert,
 } from '@mui/material'
+import Filter from '../Filters/Filters'
+import type { FilterValues } from '../Filters/Filters'
 
 interface ApiResponse {
   success: boolean
   data: Question[]
 }
 
-const QUESTIONS_URL = 'http://localhost:3000/api/questions'
+const BASE_URL = 'http://localhost:3000/api'
+
+const buildQuestionsUrl = ({ selectedCountry, selectedCategory, selectedRound, search }: FilterValues): string => {
+  const base = `${BASE_URL}/questions`
+
+  // All three filters: Country + Round + Category
+  if (selectedCountry && selectedRound && selectedCategory) {
+    return `${base}/by-country-round-category/${encodeURIComponent(selectedCountry)}/${selectedRound}/${encodeURIComponent(selectedCategory)}`
+  }
+
+  // Two filter combinations:
+  // Country + Round
+  if (selectedCountry && selectedRound) {
+    return `${base}/by-country-round/${encodeURIComponent(selectedCountry)}/${selectedRound}`
+  }
+  
+  // Category + Round
+  if (selectedCategory && selectedRound) {
+    return `${base}/by-category-round/${encodeURIComponent(selectedCategory)}/${selectedRound}`
+  }
+  
+  // Country + Category
+  if (selectedCountry && selectedCategory) {
+    return `${base}/by-country-category/${encodeURIComponent(selectedCountry)}/${encodeURIComponent(selectedCategory)}`
+  }
+  
+  // Round only
+  if (selectedRound) {
+    return `${base}/by-round/${selectedRound}`
+  }
+  
+  // Category only
+  if (selectedCategory) {
+    return `${base}/by-category/${encodeURIComponent(selectedCategory)}`
+  }
+  
+  // Country only
+  if (selectedCountry) {
+    return `${base}/by-country/${encodeURIComponent(selectedCountry)}`
+  }
+  
+  // Search text only - STILL NOT WORKING 
+  if (search && search.trim()) {
+    return `${base}/search?q=${encodeURIComponent(search.trim())}`
+  }
+  
+  // Default: all questions
+  return base
+}
+
+// const buildQuestionsUrl = ({ selectedCountry, selectedCategory, selectedRound, search }: FilterValues): string => {
+//   const base = `${BASE_URL}/questions`
+  
+//   // Use explicit check instead of truthy evaluation
+//   const hasRound = selectedRound !== undefined && selectedRound !== 0
+  
+//   // All three filters: Country + Round + Category
+//   if (selectedCountry && hasRound && selectedCategory) {
+//     return `${base}/by-country-round-category/${encodeURIComponent(selectedCountry)}/${selectedRound}/${encodeURIComponent(selectedCategory)}`
+//   }
+
+//   // Two filter combinations:
+//   if (selectedCountry && hasRound) {
+//     return `${base}/by-country-round/${encodeURIComponent(selectedCountry)}/${selectedRound}`
+//   }
+  
+//   if (selectedCategory && hasRound) {
+//     return `${base}/by-category-round/${encodeURIComponent(selectedCategory)}/${selectedRound}`
+//   }
+  
+//   if (selectedCountry && selectedCategory) {
+//     return `${base}/by-country-category/${encodeURIComponent(selectedCountry)}/${encodeURIComponent(selectedCategory)}`
+//   }
+  
+//   // Single filters
+//   if (hasRound) {
+//     return `${base}/by-round/${selectedRound}`
+//   }
+  
+//   if (selectedCategory) {
+//     return `${base}/by-category/${encodeURIComponent(selectedCategory)}`
+//   }
+  
+//   if (selectedCountry) {
+//     return `${base}/by-country/${encodeURIComponent(selectedCountry)}`
+//   }
+  
+//   // Search text only
+//   if (search && search.trim()) {
+//     return `${base}/search?q=${encodeURIComponent(search.trim())}`
+//   }
+  
+//   return base
+// }
+
 
 interface HeadCell {
   disablePadding: boolean
   id: keyof Question
   label: string
   numeric: boolean
+  width?: number
 }
 
 const headCells: readonly HeadCell[] = [
@@ -51,84 +150,105 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: true,
     label: 'Category',
+    width: 120,
   },
   {
     id: 'questionId',
     numeric: false,
     disablePadding: false,
     label: 'ID',
+    width: 150,
   },
   {
     id: 'questionTitle',
     numeric: false,
     disablePadding: false,
     label: 'Title',
+    width: 250,
   },
   {
     id: 'questionText',
     numeric: false,
     disablePadding: false,
     label: 'Question Text',
+    width: 400,
+  },
+  {
+    id: 'choices',
+    numeric: false,
+    disablePadding: false,
+    label: 'Choices',
+    width: 300,
   },
   {
     id: 'round1',
     numeric: false,
     disablePadding: false,
     label: 'R1',
+    width: 80,
   },
   {
     id: 'round2',
     numeric: false,
     disablePadding: false,
     label: 'R2',
+    width: 80,
   },
   {
     id: 'round3',
     numeric: false,
     disablePadding: false,
     label: 'R3',
+    width: 80,
   },
   {
     id: 'round4',
     numeric: false,
     disablePadding: false,
     label: 'R4',
+    width: 80,
   },
   {
     id: 'round5',
     numeric: false,
     disablePadding: false,
     label: 'R5',
+    width: 80,
   },
   {
     id: 'round6',
     numeric: false,
     disablePadding: false,
     label: 'R6',
+    width: 80,
   },
   {
     id: 'round7',
     numeric: false,
     disablePadding: false,
     label: 'R7',
+    width: 80,
   },
   {
     id: 'round8',
     numeric: false,
     disablePadding: false,
     label: 'R8',
+    width: 80,
   },
   {
     id: 'round9',
     numeric: false,
     disablePadding: false,
     label: 'R9',
+    width: 80,
   },
   {
     id: 'round10',
     numeric: false,
     disablePadding: false,
     label: 'R10',
+    width: 80,
   },
 ]
 
@@ -156,6 +276,10 @@ function EnhancedTableHead(props: EnhancedTableProps) {
           <TableCell
             key={headCell.id}
             padding={headCell.disablePadding ? 'none' : 'normal'}
+            sx={{ 
+              fontWeight: 'bold',
+              width: headCell.width 
+            }}
           >
             {headCell.label}
           </TableCell>
@@ -167,11 +291,14 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number
-  onDownload: () => void // This should be on download? (To doownload the questions)
+  onDownload: () => void
+  currentFilters: FilterValues
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, onDownload } = props
+  const { numSelected, onDownload, currentFilters } = props
+  
+  const hasFilters = Object.values(currentFilters).some(value => value !== '')
 
   return (
     <Toolbar
@@ -199,15 +326,22 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant='h6'
-          id='tableTitle'
-          component='div'
-        ></Typography>
+        <Box sx={{ flex: '1 1 100%', display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Typography variant='h6' id='tableTitle' component='div'>
+            Questions
+          </Typography>
+          {hasFilters && (
+            <Chip 
+              label="Filtered" 
+              color="primary" 
+              size="small" 
+              icon={<FilterListIcon fontSize="small" />}
+            />
+          )}
+        </Box>
       )}
       {numSelected > 0 ? (
-        <Tooltip title='Download'>
+        <Tooltip title='Download Selected'>
           <IconButton onClick={onDownload}>
             <DownloadIcon />
           </IconButton>
@@ -223,9 +357,64 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   )
 }
 
-// Fetch the questions from the API
-const fetchQuestions = async (): Promise<Question[]> => {
-  const response = await axios.get<ApiResponse>(QUESTIONS_URL)
+// CSV Download function
+const downloadCSV = (data: Question[], filename: string) => {
+  const headers = [
+    'Category',
+    'Question ID',
+    'Question Title',
+    'Question Text',
+    'Choices',
+    'Round 1',
+    'Round 2',
+    'Round 3',
+    'Round 4',
+    'Round 5',
+    'Round 6',
+    'Round 7',
+    'Round 8',
+    'Round 9',
+    'Round 10'
+  ]
+
+  const csvContent = [
+    headers.join(','),
+    ...data.map(question => [
+      `"${question.categoryTitle}"`,
+      `"${question.questionId}"`,
+      `"${question.questionTitle.replace(/"/g, '""')}"`,
+      `"${question.questionText.replace(/"/g, '""').replace(/\n/g, '\\n')}"`,
+      `"${question.choices.replace(/"/g, '""').replace(/\n/g, '\\n')}"`,
+      `"${question.round1 || ''}"`,
+      `"${question.round2 || ''}"`,
+      `"${question.round3 || ''}"`,
+      `"${question.round4 || ''}"`,
+      `"${question.round5 || ''}"`,
+      `"${question.round6 || ''}"`,
+      `"${question.round7 || ''}"`,
+      `"${question.round8 || ''}"`,
+      `"${question.round9 || ''}"`,
+      `"${question.round10 || ''}"`,
+    ].join(','))
+  ].join('\n')
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+  const link = document.createElement('a')
+  const url = URL.createObjectURL(blob)
+  
+  link.setAttribute('href', url)
+  link.setAttribute('download', filename)
+  link.style.visibility = 'hidden'
+  
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+// Fetch questions function
+const fetchQuestions = async (filters: FilterValues): Promise<Question[]> => {
+  const url = buildQuestionsUrl(filters)
+  const response = await axios.get<ApiResponse>(url)
   return response.data.data
 }
 
@@ -233,19 +422,41 @@ export default function Questions() {
   const [selected, setSelected] = React.useState<readonly string[]>([])
   const [page, setPage] = React.useState(0)
   const [dense, setDense] = React.useState(false)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [detailOpen, setDetailOpen] = React.useState(false)
-  const [selectedQuestion, setSelectedQuestion] =
-    React.useState<Question | null>(null)
+  const [selectedQuestion, setSelectedQuestion] = React.useState<Question | null>(null)
+  
+  // Filter state
+  const [currentFilters, setCurrentFilters] = React.useState<FilterValues>({
+    selectedCountry: '',
+    selectedCategory: '',
+    selectedRound: '',
+    search: ''
+  })
+  const [searchTriggered, setSearchTriggered] = React.useState(false)
 
+  // Fetch questions with current filters
   const {
     data: questions,
     isLoading,
     error,
+    refetch,
   } = useQuery<Question[]>({
-    queryKey: ['questions'],
-    queryFn: fetchQuestions,
+    queryKey: ['questions', currentFilters, searchTriggered],
+    queryFn: () => fetchQuestions(currentFilters),
+    enabled: true,
   })
+
+  const handleFilterChange = (filters: FilterValues) => {
+    setCurrentFilters(filters)
+    setPage(0) // Reset to first page when filters change
+  }
+
+  const handleSearch = (filters: FilterValues) => {
+    setCurrentFilters(filters)
+    setSearchTriggered(prev => !prev) // Trigger refetch
+    setPage(0)
+  }
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked && questions) {
@@ -279,9 +490,7 @@ export default function Questions() {
     setPage(newPage)
   }
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
@@ -291,8 +500,20 @@ export default function Questions() {
   }
 
   const handleDownload = () => {
-    // Implement delete functionality here
-    console.log('Download selected:', selected)
+    if (!questions || selected.length === 0) {
+      alert('Please select questions to download')
+      return
+    }
+
+    const selectedQuestions = questions.filter(question => 
+      selected.includes(question.questionId)
+    )
+
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+    const filename = `selected-questions-${timestamp}.csv`
+
+    downloadCSV(selectedQuestions, filename)
+    alert(`Successfully downloaded ${selectedQuestions.length} questions!`)
     setSelected([])
   }
 
@@ -306,158 +527,160 @@ export default function Questions() {
     setSelectedQuestion(null)
   }
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 && questions
-      ? Math.max(0, (1 + page) * rowsPerPage - questions.length)
-      : 0
+  const emptyRows = page > 0 && questions
+    ? Math.max(0, (1 + page) * rowsPerPage - questions.length)
+    : 0
 
   const visibleRows = React.useMemo(() => {
     if (!questions) return []
-
     return [...questions].slice(
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage
     )
   }, [page, rowsPerPage, questions])
 
-  if (isLoading) {
-    return <div>Loading Questions...</div>
-  }
-
   if (error) {
-    return <div>Something went wrong</div>
+    return (
+      <Box>
+        <Filter 
+          onFilterChange={handleFilterChange}
+          onSearch={handleSearch}
+          loading={isLoading}
+        />
+        <Alert severity="error" sx={{ m: 2 }}>
+          Error loading questions: {(error as Error).message}
+        </Alert>
+      </Box>
+    )
   }
 
   return (
     <Box sx={{ width: '100%' }}>
+      {/* Filter Component */}
+      <Filter 
+        onFilterChange={handleFilterChange}
+        onSearch={handleSearch}
+        loading={isLoading}
+      />
+
+      {/* Questions Table */}
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar
           numSelected={selected.length}
           onDownload={handleDownload}
+          currentFilters={currentFilters}
         />
-        <TableContainer
-          sx={{
-            fontFamily: "'Montserrat', Helvetica, sans-serif",
-            maxHeight: 400
-          }}
-        >
-          <Table
-            sx={{
-              minWidth: 750,
-              fontFamily: 'Helvetica, Arial, sans-serif',
-              '& .MuiTableCell-root': {
-                fontFamily: 'inherit',
-              },
-            }}
-            aria-labelledby='tableTitle'
-            size={dense ? 'small' : 'medium'}
-            stickyHeader
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              onSelectAllClick={handleSelectAllClick}
-              rowCount={questions?.length || 0}
-            />
-            <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = selected.includes(row.questionId)
-                const labelId = `enhanced-table-checkbox-${index}`
+        
+        {isLoading ? (
+          <Box display="flex" justifyContent="center" alignItems="center" p={4}>
+            <CircularProgress />
+            <Typography sx={{ ml: 2 }}>Loading questions...</Typography>
+          </Box>
+        ) : (
+          <>
+            <TableContainer sx={{ maxHeight: 600 }}>
+              <Table
+                stickyHeader
+                sx={{ 
+                  minWidth: 750,
+                  fontFamily: 'Helvetica, Arial, sans-serif',
+                  '& .MuiTableCell-root': {
+                    fontFamily: 'inherit',
+                  },
+                  '& .MuiTableHead-root .MuiTableCell-root': {
+                    fontFamily: 'inherit',
+                    fontWeight: 600,
+                    backgroundColor: 'white',
+                  }
+                }}
+                aria-labelledby='tableTitle'
+                size={dense ? 'small' : 'medium'}
+              >
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  onSelectAllClick={handleSelectAllClick}
+                  rowCount={questions?.length || 0}
+                />
+                <TableBody>
+                  {visibleRows.map((row, index) => {
+                    const isItemSelected = selected.includes(row.questionId)
+                    const labelId = `enhanced-table-checkbox-${index}`
 
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.questionId)}
-                    onDoubleClick={() => handleRowDoubleClick(row)}
-                    role='checkbox'
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.questionId}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    <TableCell padding='checkbox'>
-                      <Checkbox
-                        color='primary'
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component='th'
-                      id={labelId}
-                      scope='row'
-                      padding='none'
-                    >
-                      <Chip
-                        label={row.categoryTitle}
-                        color='primary'
-                        size='small'
-                      />
-                    </TableCell>
-                    <TableCell>{row.questionId}</TableCell>
-                    <TableCell>{row.questionTitle}</TableCell>
-                    <TableCell sx={{ maxWidth: 300 }}>
-                      <Box
-                        sx={{
-                          whiteSpace: 'pre-wrap',
-                          overflow: 'auto',
-                          textOverflow: 'ellipsis',
-                        }}
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row.questionId)}
+                        onDoubleClick={() => handleRowDoubleClick(row)}
+                        role='checkbox'
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.questionId}
+                        selected={isItemSelected}
+                        sx={{ cursor: 'pointer' }}
                       >
-                        {row.questionText}
-                      </Box>
-                    </TableCell>
-                    <TableCell>{row.round1 || ' '}</TableCell>
-                    <TableCell>{row.round2 || ' '}</TableCell>
-                    <TableCell>{row.round3 || ' '}</TableCell>
-                    <TableCell>{row.round4 || ' '}</TableCell>
-                    <TableCell>{row.round5 || ' '}</TableCell>
-                    <TableCell>{row.round6 || ' '}</TableCell>
-                    <TableCell>{row.round7 || ' '}</TableCell>
-                    <TableCell>{row.round8 || ' '}</TableCell>
-                    <TableCell>{row.round9 || ' '}</TableCell>
-                    <TableCell>{row.round10 || ' '}</TableCell>
-                  </TableRow>
-                )
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component='div'
-          count={questions?.length || 0}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+                        <TableCell padding='checkbox'>
+                          <Checkbox
+                            color='primary'
+                            checked={isItemSelected}
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </TableCell>
+                        <TableCell component='th' id={labelId} scope='row' padding='none'>
+                          <Chip label={row.categoryTitle} color='primary' size='small' />
+                        </TableCell>
+                        <TableCell>{row.questionId}</TableCell>
+                        <TableCell>{row.questionTitle}</TableCell>
+                        <TableCell sx={{ maxWidth: 400 }}>
+                          <Box sx={{ whiteSpace: 'pre-wrap', overflow: 'auto' }}>
+                            {row.questionText}
+                          </Box>
+                        </TableCell>
+                        <TableCell sx={{ maxWidth: 300 }}>
+                          <Box sx={{ whiteSpace: 'pre-wrap', overflow: 'auto' }}>
+                            {row.choices}
+                          </Box>
+                        </TableCell>
+                        <TableCell>{row.round1 || '-'}</TableCell>
+                        <TableCell>{row.round2 || '-'}</TableCell>
+                        <TableCell>{row.round3 || '-'}</TableCell>
+                        <TableCell>{row.round4 || '-'}</TableCell>
+                        <TableCell>{row.round5 || '-'}</TableCell>
+                        <TableCell>{row.round6 || '-'}</TableCell>
+                        <TableCell>{row.round7 || '-'}</TableCell>
+                        <TableCell>{row.round8 || '-'}</TableCell>
+                        <TableCell>{row.round9 || '-'}</TableCell>
+                        <TableCell>{row.round10 || '-'}</TableCell>
+                      </TableRow>
+                    )
+                  })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                      <TableCell colSpan={16} />
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25, 50]}
+              component='div'
+              count={questions?.length || 0}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </>
+        )}
       </Paper>
+
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label='Dense padding'
       />
 
       {/* Question Detail Dialog */}
-      {/* Add the api for the question details for all questions */}
-      <Dialog
-        open={detailOpen}
-        onClose={handleDetailClose}
-        maxWidth='md'
-        fullWidth
-      >
+      <Dialog open={detailOpen} onClose={handleDetailClose} maxWidth='md' fullWidth>
         <DialogTitle>Question Details</DialogTitle>
         <DialogContent>
           {selectedQuestion && (
@@ -471,47 +694,28 @@ export default function Questions() {
               <Typography variant='body1'>
                 <strong>Title:</strong> {selectedQuestion.questionTitle}
               </Typography>
-              <Typography variant='body1'>
-                <strong>Question Text:</strong> {selectedQuestion.questionText}
+              <Typography variant='body1' sx={{ mt: 2 }}>
+                <strong>Question Text:</strong>
               </Typography>
+              <Box sx={{ whiteSpace: 'pre-wrap', mt: 1, mb: 2, p: 1, bgcolor: '#f5f5f5', borderRadius: 1 }}>
+                {selectedQuestion.questionText}
+              </Box>
               <Typography variant='body1'>
                 <strong>Choices:</strong>
               </Typography>
-              <Box component='ul' sx={{ pl: 2, mt: 1 }}>
-                {selectedQuestion.choices.split('\n').map((choice, index) => (
-                  <li key={index}>{choice}</li>
-                ))}
+              <Box sx={{ whiteSpace: 'pre-wrap', mt: 1, mb: 2, p: 1, bgcolor: '#f5f5f5', borderRadius: 1 }}>
+                {selectedQuestion.choices}
               </Box>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 1:</strong> {selectedQuestion.round1 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 2:</strong> {selectedQuestion.round2 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 3:</strong> {selectedQuestion.round3 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 4:</strong> {selectedQuestion.round4 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 5:</strong> {selectedQuestion.round5 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 6:</strong> {selectedQuestion.round6 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 7:</strong> {selectedQuestion.round7 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 8:</strong> {selectedQuestion.round8 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 9:</strong> {selectedQuestion.round9 || ''}
-              </Typography>
-              <Typography variant='body1' sx={{ mt: 2 }}>
-                <strong>Round 10:</strong> {selectedQuestion.round10 || ''}
-              </Typography>
+              <Typography variant='body1' sx={{ mt: 2 }}><strong>Rounds:</strong></Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                {Array.from({ length: 10 }, (_, i) => {
+                  const roundKey = `round${i + 1}` as keyof Question
+                  const roundValue = selectedQuestion[roundKey]
+                  return roundValue ? (
+                    <Chip key={i + 1} label={`R${i + 1}: ${roundValue}`} size="small" />
+                  ) : null
+                })}
+              </Box>
             </Box>
           )}
         </DialogContent>
