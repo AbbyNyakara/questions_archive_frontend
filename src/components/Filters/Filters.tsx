@@ -11,7 +11,9 @@ import {
   Button,
   Box,
   CircularProgress,
+  ThemeProvider,
   Alert,
+  createTheme,
 } from '@mui/material'
 import type { SelectChangeEvent } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
@@ -22,10 +24,17 @@ const countries_endpoint = 'http://localhost:3000/api/metadata/countries'
 const categories_endpoint = 'http://localhost:3000/api/metadata/categories'
 const rounds_endpoint = 'http://localhost:3000/api/metadata/rounds'
 
+// Create font theme:
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Montserrat', Helvetica, sans-serif",
+  },
+})
+
 export interface FilterValues {
   selectedCountry: string
   selectedCategory: string
-  selectedRound: number
+  selectedRound: string
   search: string
 }
 
@@ -48,7 +57,7 @@ export default function Filter({
 
   const [selectedCountry, setSelectedCountry] = useState<string>('')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [selectedRound, setSelectedRound] = useState<number>(0)
+  const [selectedRound, setSelectedRound] = useState<string>('')
   const [search, setSearch] = useState<string>('')
 
   const getCurrentFilters = (): FilterValues => ({
@@ -83,6 +92,7 @@ export default function Filter({
   }, [])
 
   // Handle filter changes and notify parent
+  // country filter
   const handleCountryChange = (event: SelectChangeEvent) => {
     const value = event.target.value
     setSelectedCountry(value)
@@ -90,6 +100,7 @@ export default function Filter({
     onFilterChange(filters)
   }
 
+  // category filter
   const handleCategoryChange = (event: SelectChangeEvent) => {
     const value = event.target.value
     setSelectedCategory(value)
@@ -97,8 +108,10 @@ export default function Filter({
     onFilterChange(filters)
   }
 
-  const handleRoundChange = (event: SelectChangeEvent<number>) => {
+  // round filter
+  const handleRoundChange = (event: SelectChangeEvent) => {
     const roundNumber = event.target.value
+    console.log("The rounds event is",event)
     console.log('Selected round ID:', roundNumber)
     setSelectedRound(roundNumber)
 
@@ -121,21 +134,24 @@ export default function Filter({
     onSearch(getCurrentFilters())
   }
 
+  // For the clear button
   const handleClear = () => {
     setSelectedCountry('')
     setSelectedCategory('')
-    setSelectedRound(0)
+    setSelectedRound('')
     setSearch('')
     const emptyFilters: FilterValues = {
       selectedCountry: '',
       selectedCategory: '',
-      selectedRound: 0,
+      selectedRound: '',
       search: '',
     }
     onFilterChange(emptyFilters)
     onSearch(emptyFilters)
   }
 
+  // Triggered on enter.
+  // Add button perhaps?
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') {
       event.preventDefault()
@@ -161,109 +177,114 @@ export default function Filter({
   }
 
   return (
-    <Box
-      className='filters-container'
-      sx={{
-        display: 'flex',
-        gap: 2,
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        p: 2,
-        backgroundColor: '#f5f5f5',
-        borderRadius: 1,
-        mb: 2,
-      }}
-    >
-      {/* Countries Dropdown */}
-      <FormControl size='small' sx={{ minWidth: 150 }}>
-        <InputLabel>Country</InputLabel>
-        <Select
-          value={selectedCountry}
-          label='Country'
-          onChange={handleCountryChange}
-        >
-          <MenuItem value=''>All Countries</MenuItem>
-          {countries.map((c) => (
-            <MenuItem key={c.countryID} value={c.countryName}>
-              {c.countryName}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      {/* Categories Dropdown */}
-      <FormControl size='small' sx={{ minWidth: 150 }}>
-        <InputLabel>Category</InputLabel>
-        <Select
-          value={selectedCategory}
-          label='Category'
-          onChange={handleCategoryChange}
-        >
-          <MenuItem value=''>All Categories</MenuItem>
-          {categories.map((cat) => (
-            <MenuItem key={cat.categoryId} value={cat.categoryTitle}>
-              {cat.categoryTitle}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      {/* Rounds Dropdown */}
-      <FormControl size='small' sx={{ minWidth: 150 }}>
-        <InputLabel>Round</InputLabel>
-        <Select<number>
-          value={selectedRound}
-          label='Round'
-          onChange={handleRoundChange}
-        >
-          <MenuItem value={0}>All Rounds</MenuItem>
-          {rounds.map((r) => (
-            <MenuItem key={r.roundID} value={r.roundID}>
-              {`${r.roundLabel}: ${r.yearsOfSurvey}`}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      {/* Search Input */}
-      <TextField
-        size='small'
-        label='Search questions'
-        value={search}
-        onChange={handleSearchChange}
-        onKeyUp={handleKeyPress}
-        sx={{ minWidth: 200 }}
-        InputProps={{
-          endAdornment: search && (
-            <ClearIcon
-              sx={{ cursor: 'pointer', fontSize: 18 }}
-              onClick={() =>
-                handleSearchChange({ target: { value: '' } } as any)
-              }
-            />
-          ),
+    <ThemeProvider theme={theme}>
+      <Box
+        className='filters-container'
+        sx={{
+          display: 'flex',
+          gap: 2,
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          p: 2,
+          backgroundColor: '#f5f5f5',
+          borderRadius: 1,
+          mb: 2,
         }}
-      />
-
-      {/* Action Buttons */}
-      <Button
-        variant='contained'
-        startIcon={<SearchIcon />}
-        onClick={handleSearch}
-        disabled={loading}
-        sx={{ minWidth: 120 }}
       >
-        {loading ? <CircularProgress size={16} color='inherit' /> : 'Search'}
-      </Button>
+        {/* Countries Dropdown */}
+        <FormControl size='small' sx={{ minWidth: 150 }}>
+          <InputLabel>Country</InputLabel>
+          <Select
+            value={selectedCountry}
+            label='Country'
+            onChange={handleCountryChange}
+          >
+            <MenuItem value=''>All Countries</MenuItem>
+            {countries.map((c) => (
+              <MenuItem key={c.countryID} value={c.countryName}>
+                {c.countryName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <Button
-        variant='outlined'
-        startIcon={<ClearIcon />}
-        onClick={handleClear}
-        disabled={loading}
-      >
-        Clear
-      </Button>
-    </Box>
+        {/* Categories Dropdown */}
+        <FormControl size='small' sx={{ minWidth: 150 }}>
+          <InputLabel>Category</InputLabel>
+          <Select
+            value={selectedCategory}
+            label='Category'
+            onChange={handleCategoryChange}
+          >
+            <MenuItem value=''>All Categories</MenuItem>
+            {categories.map((cat) => (
+              <MenuItem key={cat.categoryId} value={cat.categoryTitle}>
+                {cat.categoryTitle}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Rounds Dropdown */}
+        <FormControl size='small' sx={{ minWidth: 150 }}>
+          <InputLabel>Round</InputLabel>
+          <Select // its really an integer that it expects: / how does this actually work?
+            value={selectedRound}
+            label='Round'
+            onChange={handleRoundChange}
+          >
+            {/* when the value is '', then enter all rounds */}
+            <MenuItem value=''>All Rounds</MenuItem>
+            {rounds.map((r) => (
+              // The value is what gets passed to the API Call
+              <MenuItem key={r.roundLabel} value={r.roundID}> 
+                {`${r.roundLabel}: ${r.yearsOfSurvey}`}
+                
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Search Input */}
+        <TextField
+          size='small'
+          label='Search questions'
+          value={search}
+          onChange={handleSearchChange}
+          onKeyUp={handleKeyPress}
+          sx={{ minWidth: 500 }}
+          InputProps={{
+            endAdornment: search && (
+              <ClearIcon
+                sx={{ cursor: 'pointer', fontSize: 18 }}
+                onClick={() =>
+                  handleSearchChange({ target: { value: '' } } as any)
+                }
+              />
+            ),
+          }}
+        />
+
+        {/* Action Buttons */}
+        <Button
+          variant='contained'
+          startIcon={<SearchIcon />}
+          onClick={handleSearch}
+          disabled={loading}
+          sx={{ minWidth: 120 }}
+        >
+          {loading ? <CircularProgress size={16} color='inherit' /> : 'Search'}
+        </Button>
+
+        <Button
+          variant='outlined'
+          startIcon={<ClearIcon />}
+          onClick={handleClear}
+          disabled={loading}
+        >
+          Clear
+        </Button>
+      </Box>
+    </ThemeProvider>
   )
 }

@@ -28,7 +28,7 @@ const Navbar = () => {
                 <i className='fas fa-clipboard-list'></i>Master Questionnaire
               </NavLink>
             </li>
-            <li className='nav-item'>
+            {/* <li className='nav-item'>
               <NavLink
                 to='/csqs'
                 className={({ isActive }) =>
@@ -38,7 +38,7 @@ const Navbar = () => {
                 <i className='fas fa-globe-americas'></i>Country-Specific
                 Questions
               </NavLink>
-            </li>
+            </li> */}
             <li className='nav-item'>
               <NavLink
                 to='/saved'

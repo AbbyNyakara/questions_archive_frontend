@@ -1,0 +1,52 @@
+/* src/components/filters.css */
+.filters-container,
+.filters-form,
+.filters-dropdown,
+.filters-search-box,
+.search-button,
+.loading,
+.error {
+  font-family: Montserrat, Helvetica, sans-serif;
+}
+
+.filters-container {
+  padding: 1rem;
+}
+
+.filters-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.filters-dropdown {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filters-search-box {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #005bb5;
+}
+
+.loading,
+.error {
+  font-size: 1rem;
+  color: #333;
+}

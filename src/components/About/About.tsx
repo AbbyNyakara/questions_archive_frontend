@@ -140,3 +140,6 @@ const About = () => {
 }
 
 export default About
+
+// NOTE TO SELF 
+// Check out the paper component in mui - THE TYPOGRAPHY
