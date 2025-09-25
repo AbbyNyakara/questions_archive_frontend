@@ -228,18 +228,15 @@ export default function Filter({
         {/* Rounds Dropdown */}
         <FormControl size='small' sx={{ minWidth: 150 }}>
           <InputLabel>Round</InputLabel>
-          <Select // its really an integer that it expects: / how does this actually work?
+          <Select
             value={selectedRound}
             label='Round'
             onChange={handleRoundChange}
           >
-            {/* when the value is '', then enter all rounds */}
             <MenuItem value=''>All Rounds</MenuItem>
             {rounds.map((r) => (
-              // The value is what gets passed to the API Call
-              <MenuItem key={r.roundLabel} value={r.roundID}> 
+              <MenuItem key={r.roundLabel} value={r.roundId}> 
                 {`${r.roundLabel}: ${r.yearsOfSurvey}`}
-                
               </MenuItem>
             ))}
           </Select>

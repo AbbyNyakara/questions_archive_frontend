@@ -9,7 +9,7 @@ export type Category = {
 }
 
 export type Round = {
-  roundID: number
+  roundId: number
   roundLabel: string
   yearsOfSurvey: string
 }
