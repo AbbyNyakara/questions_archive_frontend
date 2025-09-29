@@ -28,18 +28,18 @@ const Navbar = () => {
                 <i className='fas fa-clipboard-list'></i>Master Questionnaire
               </NavLink>
             </li>
-            {/* <li className='nav-item'>
+            <li className='nav-item'>
               <NavLink
                 to='/csqs'
                 className={({ isActive }) =>
                   'nav-link' + (isActive ? ' active' : '')
                 }
               >
-                <i className='fas fa-globe-americas'></i>Country-Specific
+                <i className='fas fa-globe-africa'></i>Country-Specific
                 Questions
               </NavLink>
-            </li> */}
-            <li className='nav-item'>
+            </li>
+            {/* <li className='nav-item'>
               <NavLink
                 to='/saved'
                 className={({ isActive }) =>
@@ -48,10 +48,12 @@ const Navbar = () => {
               >
                 <i className='fas fa-bookmark'></i>Saved
               </NavLink>
-            </li>
+            </li> */}
             <li className='nav-item'>
               <NavLink
-                to='/api'
+                // to='/api' - This is what will change (Make it open on the same tab)
+                to='http://localhost:3000/api-docs'
+                target='_blank'
                 className={({ isActive }) =>
                   'nav-link' + (isActive ? ' active' : '')
                 }

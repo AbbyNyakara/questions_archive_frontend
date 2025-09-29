@@ -1,5 +1,5 @@
 export type Country = {
-  countryID: string
+  countryId: string
   countryName: string
 }
 
