@@ -305,7 +305,6 @@ import {
   createTheme,
 } from '@mui/material'
 import type { SelectChangeEvent } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
 import ClearIcon from '@mui/icons-material/Clear'
 
 // API Endpoints - for filtering panel:
@@ -335,7 +334,6 @@ interface FilterProps {
 
 export default function Filter({
   onFilterChange,
-  onSearch,
   loading = false,
 }: FilterProps) {
   const [countries, setCountries] = useState<Country[]>([])

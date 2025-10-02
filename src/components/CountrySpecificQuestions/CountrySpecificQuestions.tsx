@@ -54,7 +54,6 @@ const theme = createTheme({
 const buildCSQQuestionsUrl = ({
   selectedCountry,
   selectedRound,
-  search,
 }: CSQFilterValues): string => {
   const base = `${BASE_URL}/questions/csq`
 
@@ -329,7 +328,7 @@ export default function CSQQuestions() {
     data: questions,
     isLoading,
     error,
-    refetch,
+    // refetch,
   } = useQuery<CSQQuestion[]>({
     queryKey: ['csq-questions', currentFilters, searchTriggered],
     queryFn: () => fetchCSQQuestions(currentFilters),
@@ -373,7 +372,7 @@ export default function CSQQuestions() {
     setSelected([])
   }
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+  const handleClick = (_event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id)
     let newSelected: readonly number[] = []
 
@@ -392,7 +391,7 @@ export default function CSQQuestions() {
     setSelected(newSelected)
   }
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage)
   }
 
@@ -401,7 +400,7 @@ export default function CSQQuestions() {
     setPage(0)
   }
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputListener>) => {
+  const handleChangeDense = (event: any) => {
     setDense(event.target.checked)
   }
 
