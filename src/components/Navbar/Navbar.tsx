@@ -52,7 +52,7 @@ const Navbar = () => {
             <li className='nav-item'>
               <NavLink
                 // to='/api' - This is what will change (Make it open on the same tab)
-                to='http://localhost:3000/api-docs'
+                to= {`${import.meta.env.VITE_BASE_URL}/api-docs`}
                 target='_blank'
                 className={({ isActive }) =>
                   'nav-link' + (isActive ? ' active' : '')
