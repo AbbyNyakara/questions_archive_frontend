@@ -1,5 +1,5 @@
 export type Country = {
-  countryID: string
+  countryId: string
   countryName: string
 }
 
@@ -9,13 +9,13 @@ export type Category = {
 }
 
 export type Round = {
-  roundID: number
+  roundId: number
   roundLabel: string
   yearsOfSurvey: string
 }
 
-// export type CountryResponse = Country[]
+export type CountryResponse = Country[]
 
-// export type CategoryResponse = Country[]
+export type CategoryResponse = Country[]
 
-// export type RoundsApiResponse = Country[]
+export type RoundsApiResponse = Country[]
