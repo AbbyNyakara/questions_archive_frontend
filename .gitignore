@@ -24,3 +24,5 @@ extras
 *.njsproj
 *.sln
 *.sw?
+
+.env
