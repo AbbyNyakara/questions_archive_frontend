@@ -22,8 +22,8 @@ import ClearIcon from '@mui/icons-material/Clear'
 
 
 // API Endpoints - for filtering panel:
-const countries_endpoint = `${import.meta.env.BASE_URL}/metadata/countries`
-const rounds_endpoint = `${import.meta.env.BASE_URL}/metadata/rounds`
+const countries_endpoint = `${import.meta.env.VITE_BASE_URL}/metadata/countries`
+const rounds_endpoint = `${import.meta.env.VITE_BASE_URL}/metadata/rounds`
 
 // Create font theme:
 const theme = createTheme({
