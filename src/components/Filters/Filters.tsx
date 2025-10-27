@@ -14,6 +14,8 @@ import {
   ThemeProvider,
   Alert,
   createTheme,
+  IconButton,
+  InputAdornment,
 } from '@mui/material'
 import type { SelectChangeEvent } from '@mui/material'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -182,8 +184,21 @@ export default function Filter({
 
   return (
     <ThemeProvider theme={theme}>
-      <Box className='filters-container'>
-        <FormControl size='small' sx={{ minWidth: 150 }}>
+      <Box
+        className='filters-container'
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: { xs: 1, md: 2 },
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        <FormControl
+          size='small'
+          sx={{ minWidth: { xs: '100%', sm: 150 } }}
+          className='filter-values'
+        >
           <InputLabel>Country</InputLabel>
           <Select
             value={selectedCountry}
@@ -199,7 +214,11 @@ export default function Filter({
           </Select>
         </FormControl>
 
-        <FormControl size='small' sx={{ minWidth: 150 }}>
+        <FormControl
+          size='small'
+          sx={{ minWidth: 150 }}
+          className='filter-values'
+        >
           <InputLabel>Category</InputLabel>
           <Select
             value={selectedCategory}
@@ -215,7 +234,11 @@ export default function Filter({
           </Select>
         </FormControl>
 
-        <FormControl size='small' sx={{ minWidth: 150 }}>
+        <FormControl
+          size='small'
+          sx={{ minWidth: 150 }}
+          className='filter-values'
+        >
           <InputLabel>Round</InputLabel>
           <Select
             value={selectedRound}
@@ -234,25 +257,41 @@ export default function Filter({
         <TextField
           size='small'
           label='Search questions'
-          placeholder='Search in title, text, and category'
+          placeholder='Search in title, text, and label'
+          className='filter-values'
           value={search}
           onChange={handleSearchChange}
           onKeyUp={handleKeyPress}
-          sx={{ minWidth: 500 }}
-          InputProps={{
-            endAdornment: search && (
-              <ClearIcon
-                sx={{ cursor: 'pointer', fontSize: 18 }}
-                onClick={() =>
-                  handleSearchChange({ target: { value: '' } } as any)
-                }
-              />
-            ),
+          sx={{
+            minWidth: { xs: '100%', sm: 500 },
+          }}
+          slotProps={{
+            input: {
+              endAdornment: search ? (
+                <InputAdornment position='end'>
+                  <IconButton
+                    size='small'
+                    onClick={() => {
+                      setSearch('')
+                      onFilterChange({
+                        ...getCurrentFilters(),
+                        search: '',
+                      })
+                    }}
+                    edge='end'
+                    aria-label='clear search'
+                  >
+                    <ClearIcon sx={{ fontSize: 18 }} />
+                  </IconButton>
+                </InputAdornment>
+              ) : null,
+            },
           }}
         />
 
         <Button
           variant='outlined'
+          className='filter-values'
           startIcon={<ClearIcon />}
           onClick={handleClear}
           disabled={loading}

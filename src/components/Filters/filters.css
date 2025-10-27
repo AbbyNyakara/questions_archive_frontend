@@ -15,8 +15,6 @@
   align-items: center;
   gap: 2rem;
   background-color: white;
-
-  
 }
 
 .filters-form {
@@ -42,4 +40,21 @@
 .error {
   font-size: 1rem;
   color: #333;
+}
+/* 
+For smaller screens */
+
+@media (max-width: 768px) {
+  .filters-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .filter-values {
+   width: 100% !important;
+   min-width: 100% !important;
+  }
+  
 }
