@@ -1,7 +1,7 @@
 .nav-header {
   border-bottom: solid 1px #ddd;
-  background-color: #d93e00;
-  /* background: linear-gradient(135deg, #d93e00 0%, #ff6b35 100%); */
+  /* background-color: #d93e00; */
+  background: linear-gradient(135deg, #d93e00 0%, #ff6b35 100%);
   color: #fff;
   font-family: Oswald, Helvetica, sans-serif;
   text-transform: uppercase;  
@@ -61,11 +61,27 @@
 
   .nav-menu {
     flex-direction: column;
+    width: 100%;
     align-items: center;
+    /* align-items: flex-start; */
     gap: 1rem;
+    font-size: 1rem;
+    letter-spacing: normal;
+    font-weight: 400;
+    /* padding-left: 0; */
   }
 
   .nav-link {
     padding: 0.5rem 1rem;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .links {
+    width: 90%;
+    text-align: left;
+    margin-right: 0.5rem;
   }
 }

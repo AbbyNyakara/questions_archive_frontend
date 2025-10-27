@@ -15,7 +15,7 @@ const Navbar = () => {
                   'nav-link' + (isActive ? ' active' : '')
                 }
               >
-                <i className='fas fa-info-circle'></i>About
+                <i className='fas fa-info-circle links'></i>About
               </NavLink>
             </li>
             <li className='nav-item'>
@@ -25,7 +25,7 @@ const Navbar = () => {
                   'nav-link' + (isActive ? ' active' : '')
                 }
               >
-                <i className='fas fa-clipboard-list'></i>Master Questionnaire
+                <i className='fas fa-clipboard-list links'></i>Master Questionnaire
               </NavLink>
             </li>
             <li className='nav-item'>
@@ -35,30 +35,8 @@ const Navbar = () => {
                   'nav-link' + (isActive ? ' active' : '')
                 }
               >
-                <i className='fas fa-globe-africa'></i>Country-Specific
+                <i className='fas fa-globe-africa links'></i>Country-Specific
                 Questions
-              </NavLink>
-            </li>
-            {/* <li className='nav-item'>
-              <NavLink
-                to='/saved'
-                className={({ isActive }) =>
-                  'nav-link' + (isActive ? ' active' : '')
-                }
-              >
-                <i className='fas fa-bookmark'></i>Saved
-              </NavLink>
-            </li> */}
-            <li className='nav-item'>
-              <NavLink
-                // to='/api' - This is what will change (Make it open on the same tab)
-                to= {`${import.meta.env.VITE_BASE_URL}/api-docs`}
-                target='_blank'
-                className={({ isActive }) =>
-                  'nav-link' + (isActive ? ' active' : '')
-                }
-              >
-                <i className='fas fa-database'></i>API Platform
               </NavLink>
             </li>
           </ul>
