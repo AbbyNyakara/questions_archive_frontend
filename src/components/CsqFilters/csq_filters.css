@@ -1,6 +1,60 @@
+.filters-container,
+.filters-form,
+.filters-dropdown,
+.filters-search-box,
+.search-button,
+.loading,
+.error {
+  font-family: Montserrat, Helvetica, sans-serif;
+}
+
 .filters-container {
-  position: sticky;
-  top: 0;
-  z-index: 1100; /* Higher than other elements for visibility */
-  background-color: #f5f5f5; /* To prevent overlay transparency issues */
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  background-color: white;
+}
+
+.filters-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.filters-dropdown {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filters-search-box {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.loading,
+.error {
+  font-size: 1rem;
+  color: #333;
+}
+/* 
+For smaller screens */
+
+@media (max-width: 768px) {
+  .filters-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .filter-values {
+   width: 100% !important;
+   min-width: 100% !important;
+  }
+  
 }
