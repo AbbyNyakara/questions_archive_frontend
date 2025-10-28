@@ -167,7 +167,7 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: false,
     label: 'Response Options',
-    width: 300,
+    width: 350,
   },
   {
     id: 'round1',
@@ -355,9 +355,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           </IconButton>
         </Tooltip>
       ) : (
+        // Remove this altogether
         <Tooltip title='Filter list'>
           <IconButton>
-            <FilterListIcon />
+            {/* <FilterListIcon /> */}
           </IconButton>
         </Tooltip>
       )}
@@ -620,7 +621,6 @@ export default function Questions() {
                     },
                   }}
                   aria-labelledby='tableTitle'
-                  // size={dense ? 'small' : 'medium'}
                 >
                   <EnhancedTableHead
                     numSelected={selected.length}
@@ -714,11 +714,6 @@ export default function Questions() {
             </>
           )}
         </Paper>
-
-        {/* <FormControlLabel
-          control={<Switch checked={dense} onChange={handleChangeDense} />}
-          label='Dense padding'
-        /> */}
 
         {/* Question Detail Dialog */}
         <Dialog

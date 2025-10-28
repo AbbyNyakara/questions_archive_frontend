@@ -206,9 +206,6 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             gap: 2,
           }}
         >
-          <Typography variant='h6' id='tableTitle' component='div'>
-            {/* Country Specific Questions */}
-          </Typography>
           {hasFilters && (
             <Chip
               label='Filtered'
@@ -226,10 +223,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           </IconButton>
         </Tooltip>
       ) : (
+        // Remoove this altogether
         <Tooltip title='Filter list'>
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
+          <IconButton>{/* <FilterListIcon /> */}</IconButton>
         </Tooltip>
       )}
     </Toolbar>
@@ -300,7 +296,6 @@ const downloadCSV = (data: CSQQuestion[], filename: string) => {
 // Fetch CSQ questions function
 const fetchCSQQuestions = async (filters: CSQFilterValues): Promise<CSQQuestion[]> => {
   const url = buildCSQQuestionsUrl(filters)
-  console.log('Fetching from URL:', url)
   const response = await axios.get<CSQApiResponse>(url)
   return response.data.data
 }
