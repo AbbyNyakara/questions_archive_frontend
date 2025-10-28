@@ -17,8 +17,6 @@ import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -94,14 +92,14 @@ const headCells: readonly HeadCell[] = [
     numeric: true,
     disablePadding: false,
     label: 'Round',
-    width: 80,
+    width: 30,
   },
   {
     id: 'csqCountryName',
     numeric: false,
     disablePadding: false,
     label: 'Country',
-    width: 120,
+    width: 100,
   },
   {
     id: 'csqQuestionTag',
@@ -310,7 +308,6 @@ const fetchCSQQuestions = async (filters: CSQFilterValues): Promise<CSQQuestion[
 export default function CSQQuestions() {
   const [selected, setSelected] = React.useState<readonly number[]>([])
   const [page, setPage] = React.useState(0)
-  const [dense, setDense] = React.useState(false)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [detailOpen, setDetailOpen] = React.useState(false)
   const [selectedQuestion, setSelectedQuestion] = React.useState<CSQQuestion | null>(null)
@@ -398,10 +395,6 @@ export default function CSQQuestions() {
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
-  }
-
-  const handleChangeDense = (event: any) => {
-    setDense(event.target.checked)
   }
 
   const handleDownload = () => {
@@ -500,7 +493,7 @@ export default function CSQQuestions() {
                     },
                   }}
                   aria-labelledby='tableTitle'
-                  size={dense ? 'small' : 'medium'}
+                  
                 >
                   <EnhancedTableHead
                     numSelected={selected.length}
@@ -553,7 +546,7 @@ export default function CSQQuestions() {
                       )
                     })}
                     {emptyRows > 0 && (
-                      <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                      <TableRow>
                         <TableCell colSpan={6} />
                       </TableRow>
                     )}
@@ -572,11 +565,6 @@ export default function CSQQuestions() {
             </>
           )}
         </Paper>
-
-        <FormControlLabel
-          control={<Switch checked={dense} onChange={handleChangeDense} />}
-          label='Dense padding'
-        />
 
         {/* Question Detail Dialog */}
         <Dialog open={detailOpen} onClose={handleDetailClose} maxWidth='md' fullWidth>

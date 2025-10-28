@@ -56,7 +56,7 @@ const fetchRounds = async (): Promise<Round[]> => {
   return data.data
 }
 
-export default function Filter({ onFilterChange, loading = false }: FilterProps) {
+export default function CSQFilter ({ onFilterChange, loading = false }: FilterProps) {
   // Filter state
   const [selectedCountry, setSelectedCountry] = useState<string>('')
   const [selectedRound, setSelectedRound] = useState<string>('')
