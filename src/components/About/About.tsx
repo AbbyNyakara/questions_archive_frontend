@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, Typography, Grid } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import DownloadIcon from '@mui/icons-material/Download'
 import ShareIcon from '@mui/icons-material/Share'
-
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 const About = () => {
   return (
     <section className='about'>
@@ -49,8 +49,47 @@ const About = () => {
               variant='body2'
               sx={{ fontFamily: "'Montserrat', Helvetica, sans-serif" }}
             >
-              Find questions quickly with our search and filtering
-              tools.
+              Find questions quickly with our search and filtering tools.
+            </Typography>
+          </CardContent>
+        </Card>
+
+        <Card
+          className='feature-card'
+          sx={{
+            background: '#fff',
+            boxShadow: '0 5px 15px rgba(0, 0, 0, 0.5)',
+            transition: 'transform 0.3s ease-in-out',
+            '&:hover': {
+              transform: 'translateY(-5px)',
+            },
+          }}
+        >
+          <CardHeader
+            sx={{ margin: 'auto', display: 'block' }}
+            className='feature-card-icon'
+            avatar={
+              <InfoOutlineIcon
+                sx={{ fontSize: 40, margin: 'auto', display: 'block' }}
+              />
+            }
+          />
+          <CardContent>
+            <Typography
+              className='card-heading'
+              variant='h6'
+              sx={{
+                fontFamily: "'Oswald', Helvetica, sans-serif",
+                fontWeight: 'bold',
+              }}
+            >
+              View Details
+            </Typography>
+            <Typography
+              variant='body2'
+              sx={{ fontFamily: "'Montserrat', Helvetica, sans-serif" }}
+            >
+              Double Click on each question to view the Details
             </Typography>
           </CardContent>
         </Card>
