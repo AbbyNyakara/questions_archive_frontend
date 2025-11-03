@@ -112,7 +112,7 @@ const headCells: readonly HeadCell[] = [
     id: 'csqQuestionText',
     numeric: false,
     disablePadding: false,
-    label: 'Question Text',
+    label: 'Question text',
     width: 450,
   },
   {

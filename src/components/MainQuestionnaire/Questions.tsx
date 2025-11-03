@@ -159,14 +159,14 @@ const headCells: readonly HeadCell[] = [
     id: 'questionText',
     numeric: false,
     disablePadding: false,
-    label: 'Question Text',
+    label: 'Question text',
     width: 450,
   },
   {
     id: 'choices',
     numeric: false,
     disablePadding: false,
-    label: 'Response Options',
+    label: 'Response options',
     width: 350,
   },
   {
