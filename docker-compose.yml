@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: questions-archive-frontend
+    ports:
+      - "80:80"          # EC2 port 80 -> container port 80
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+   
